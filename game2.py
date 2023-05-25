@@ -13,7 +13,7 @@ def check_bound(area: pg.Rect, obj: pg.Rect) -> tuple[bool, bool]:
     """
     オブジェクトが画面内か画面外かを判定し，真理値タプルを返す
     引数1 area：画面SurfaceのRect
-    引数2 obj：オブジェクト（爆弾，こうかとん）SurfaceのRect
+    引数2 obj：オブジェクト（敵機,こうかとん）SurfaceのRect
     戻り値：横方向，縦方向のはみ出し判定結果（画面内：True／画面外：False）
     """
     yoko, tate = True, True
@@ -82,25 +82,20 @@ class Enemy1(pg.sprite.Sprite):
 
         
     def update(self):
-        """
-        敵機を速度ベクトルself.vyに基づき移動（降下）させる
-        ランダムに決めた停止位置_boundまで降下したら，_stateを停止状態に変更する
-        引数 screen：画面Surface
-        """
 
         self.rect.centerx += self.vx
 
 
 class Enemy2(pg.sprite.Sprite):
     """
-    敵機に関するクラス
+    変則型敵機に関するクラス
     """
     imgs = [pg.image.load(f"ex04/fig/alien{i}.png") for i in range(1, 4)]
     
     def __init__(self):
         super().__init__()
         self.image = random.choice(__class__.imgs)
-        self.image = pg.transform.rotozoom(self.image,0,2.0)
+        self.image = pg.transform.rotozoom(self.image,0,2.0)  #敵機のサイズ二倍
 
         self.rect = self.image.get_rect()
         self.rect.center = random.randint(1200, WIDTH), 100
@@ -111,8 +106,7 @@ class Enemy2(pg.sprite.Sprite):
     def update(self):
         """
         敵機を速度ベクトルself.vyに基づき移動（降下）させる
-        ランダムに決めた停止位置_boundまで降下したら，_stateを停止状態に変更する
-        引数 screen：画面Surface
+        ランダムに決めた停止位置_boundまで降下
         """
         tmr = 0
         
@@ -150,7 +144,7 @@ class Coin(pg.sprite.Sprite):
     def update(self):
         """
         敵機を速度ベクトルself.vyに基づき移動（降下）させる
-        ランダムに決めた停止位置_boundまで降下したら，_stateを停止状態に変更する
+        ランダムに決めた停止位置_boundまで降下
         引数 screen：画面Surface
         """
         self.rect.centerx += self.vx
@@ -205,7 +199,7 @@ def main():
                 time.sleep(2)
                 return
         if len(pg.sprite.spritecollide(bird, coins, True)) != 0:
-                pg.display.update() # スコアアップのコード書きたい
+                pg.display.update() 
             
         for emy in emys1:
             if False in check_bound(screen.get_rect(),emy.rect):
